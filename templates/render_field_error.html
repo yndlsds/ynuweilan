@@ -1,0 +1,5 @@
+{% macro render_field_error(field) %}
+  {% if field.errors %}
+    <span class="help-block">{{ field.errors|join(", ") }}</span>
+  {% endif %}
+{% endmacro %}

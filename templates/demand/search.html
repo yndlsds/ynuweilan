@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}市场需求{% endblock %}
+
+{% block css %}
+  <!--dynamic table-->
+  <link href="/static/datatable/demo_page.css" rel="stylesheet" />
+  <link href="/static/datatable/demo_table.css" rel="stylesheet" />
+  <link href="/static/datatable/DT_bootstrap.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <section class="panel">
+      <header class="panel-heading">
+        市场需求 
+      </header>
+      <div class="panel-body">
+        <div class="clearfix">
+          <div class="btn-group pull-right">
+            {% from "render_pagination.html" import render_pagination %}
+            {{ render_pagination(demands, page) }}
+          </div>
+        </div>
+        <div class="space15"></div>
+        <div class="adv-table">
+          <table class="display table table-bordered table-striped dynamic-table">
+            <thead>
+              <tr>
+                <th class="col-sm-1">时间</th>
+                <th class="col-sm-11">内容</th>
+                {% if current_user.has_role("admin") %}
+                  <th class="col-sm-11">操作</th>
+                {% endif %}               
+              </tr>
+            </thead>
+            <tbody>
+              {% for demand in demands.items %}
+                <tr>
+                  <td>{{ demand.datetime }}</td>
+                  <td>{{ demand.content }}</td>
+                  {% if current_user.has_role("admin") %}
+                    <td><a href="{{ url_for("demand.state", demandId=demand.id) }}">封禁<i class="fa fa-minus-circle"></i></a></td>
+                  {% endif %}
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+  <!--dynamic table-->
+  <script src="/static/datatable/jquery.dataTables.js"></script>
+  <script src="/static/datatable/DT_bootstrap.js"></script>
+  <script src="/static/datatable/dynamic_table_init.js"></script>
+{% endblock %}

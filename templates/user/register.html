@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="images/favicon.html">
+
+  <title>用户注册</title>
+
+  <!--Core CSS -->
+  <link href="/static/bs3/bootstrap.min.css" rel="stylesheet"/>
+  <link href="/static/bs3/bootstrap-reset.css" rel="stylesheet"/>
+  <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+
+  <!-- Custom styles for this template -->
+  <link href="/static/css/style.css" rel="stylesheet">
+  <link href="/static/css/style-responsive.css" rel="stylesheet"/>
+</head>
+
+<body class="login-body">
+  <div class="container">
+    {% include "flash.html" %}
+    <form class="form-signin" method="POST" data-parsley-validate>      
+      {% from "render_field_error.html" import render_field_error %}
+      <h2 class="form-signin-heading">用户注册</h2>
+      <div class="login-wrap">
+        {{ form.email(class="form-control", autofocus=true, placeholder="邮箱",
+        **{"data-parsley-required":"true", "data-parsley-type":"email", "data-parsley-maxlength":"16"}) }}
+        {{ render_field_error(form.email) }}
+        {{ form.password(class="form-control", placeholder="密码",
+        **{"data-parsley-required":"true", "data-parsley-maxlength":"8"}) }}
+        {{ render_field_error(form.password) }}      
+        <label class="checkbox">
+          <input type="checkbox" name="agree" checked="checked" data-parsley-required="true">我同意网络服务协议</label>
+        <button class="btn btn-lg btn-login btn-block" type="submit">提交</button>
+        <div class="registration">
+          已经关注了<strong>微信公众号</strong> 或者 已有账号？请
+          <a class="" href="{{ url_for("user.login_email") }}">登陆</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Core js-->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/bs3/bootstrap.min.js"></script>
+
+  <!-- parsley -->
+  <script src="/static/parsley.min.js"></script>
+</body>
+</html>

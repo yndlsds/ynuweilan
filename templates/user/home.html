@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+
+{% block title %}用户账户{% endblock %}
+
+{% block body %}
+  <div class="row">
+  	<div class="col-md-6">
+  		<div class="panel panel-default">
+  			<div class="panel-heading">
+  				账户信息
+  			</div>
+  			<div class="panel-body">
+  				<p>微信公众号：{{ current_user.weixinhao if current_user.weixinhao else "未绑定微信" }}<br></p>
+					<p>微信昵称：{{ current_user.nickname if current_user.nickname else "未绑定微信" }}<br></p>
+					<p>邮箱：{{ current_user.email if current_user.email else "未通过手机登陆" }}<br></p>
+          <p>权限：{% if current_user.has_role("admin") %}系统级{% endif %}{% if current_user.has_role("manager") %}管理员级{% endif %}{% if not current_user.role %}会员{% endif %}<br></p>
+					<p>注册时间：{{ current_user.register }}<br></p>
+					<p>最近一次登录时间：{{ current_user.login }}<br></p>
+					<p>用户状态：{% if current_user.state %}正常{% else %}锁定，请联系管理员{% endif %}<br></p>
+  			</div>
+  		</div>
+  	</div>
+  	<div class="col-md-6">
+      {% if current_user.has_role("admin") or current_user.has_role("manager") %}
+    		<div class="panel panel-default">
+    			<div class="panel-heading">
+    				微信公众号
+    			</div>
+    			<div class="panel-body">
+    				<p>
+              {% if current_user.weixin %}
+                <strong>{{ current_user.weixin[0].name }}</strong>
+                <a href="{{ url_for("weixin.edit") }}">&nbsp<i class="fa fa-pencil"></i>修改</a><br><br>
+                微信公众平台绑定方法：<br>
+                <ol>
+                  <li>
+                    登录
+                    <a href="https://mp.weixin.qq.com/" target="_blank">&nbsp<i class="fa fa-link"></i>微信公众平台</a>
+                  </li>
+                  <li>
+                    启用开发者模式：选择“功能”--“高级功能”，点击“开发模式”                
+                  </li>
+                  <li>
+                    填写接口配置信息：<br>
+                    URL：http://ynuweilan.sinaapp.com/weixin/{{ current_user.weixin[0].name }}/<br>
+                    Token：{{ current_user.weixin[0].random }}
+                  </li>
+                </ol>
+    					{% else %}
+    						<a href="{{ url_for("weixin.add") }}">绑定微信公众号</a>
+    					{% endif %}
+            </p>
+    			</div>       
+  		  </div>
+      {% endif %}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          公司信息管理
+        </div>
+        <div class="panel-body">
+          <p>
+            {% if current_user.company %}
+              <strong>{{ current_user.company[0].name }}</strong>
+              <a href="{{ url_for("company.edit") }}" class="pull-right"><i class="fa fa-pencil"></i>修改</a>
+              <a href="{{ url_for("company.preview", companyId=current_user.company[0].id) }}" target="_blank" class="pull-right"><i class="fa fa-eye"></i>预览</a>
+              <p>经理：{{ current_user.company[0].manager }}</p>
+              <p>地址：{{ current_user.company[0].province }}&nbsp{{ current_user.company[0].city }}&nbsp{{ current_user.company[0].address }}</p>
+              <p>手机：{{ current_user.company[0].phone }}</p>
+              <p>电话：{{ current_user.company[0].telephone }}</p>
+              <p>QQ QQ群：{{ current_user.company[0].qq }}</p>
+              <p>邮箱：{{ current_user.company[0].email }}</p>
+              <p>网站：{{ current_user.company[0].website }}</p>
+              <p>品牌：{{ current_user.company[0].brands }}</p>
+              <p>品类：{{ current_user.company[0].categorys }}</p>
+              <p>简介：{{ current_user.company[0].brief }}</p>
+            {% else %}
+              <a href="{{ url_for("company.edit") }}">请登记公司信息</a>
+            {% endif %}
+          </p>
+        </div>
+      </div>
+  	</div>
+  </div>
+{% endblock %}

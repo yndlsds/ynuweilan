@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block title %}公司查询{% endblock %}
+
+{% block css %}
+  <!-- select2 -->
+  <link href="/static/select2/select2.css" rel="stylesheet"/>
+  <!--dynamic table-->
+  <link href="/static/datatable/demo_page.css" rel="stylesheet" />
+  <link href="/static/datatable/demo_table.css" rel="stylesheet" />
+  <link href="/static/datatable/DT_bootstrap.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <section class="panel">
+      <header class="panel-heading">
+        公司查询
+      </header>
+      <div class="panel-body">        
+        <div class="row">
+          <div class="col-sm-3">
+            <select class="form-control" name="provinceId" id="province">
+              <option value="">省/直辖市</option>
+              <option value="1">北京市</option>
+              <option value="2">上海市</option>
+              <option value="3">天津市</option>
+              <option value="4">重庆市</option>
+              <option value="5">黑龙江省</option>
+              <option value="6">吉林省</option>
+              <option value="7">辽宁省</option>
+              <option value="8">山东省</option>
+              <option value="9">山西省</option>
+              <option value="10">陕西省</option>
+              <option value="11">河北省</option>
+              <option value="12">河南省</option>
+              <option value="13">湖北省</option>
+              <option value="14">湖南省</option>
+              <option value="15">海南省</option>
+              <option value="16">江苏省</option>
+              <option value="17">江西省</option>
+              <option value="18">广东省</option>
+              <option value="19">广西省</option>
+              <option value="20">云南省</option>
+              <option value="21">贵州省</option>
+              <option value="22">四川省</option>
+              <option value="23">内蒙古</option>
+              <option value="24">宁夏</option>
+              <option value="25">甘肃省</option>
+              <option value="26">青海省</option>
+              <option value="27">西藏</option>
+              <option value="28">新疆</option>
+              <option value="29">安徽省</option>
+              <option value="30">浙江省</option>
+              <option value="31">福建省</option>
+              <option value="32">港澳台</option>
+            </select>
+          </div>
+          <div class="col-sm-3">
+            <select class="form-control" name="cityId" id="city">              
+              <option value="">城市/区</option>
+            </select>            
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="select2-ajax-tags-company col-md-12" id="search-company" placeholder="按公司名称搜索" />
+          </div>
+        </div>
+        <br>
+        <div class="row">
+          <div class="col-sm-6">
+            <input type="text" class="select2-ajax-tags-brand col-md-12" placeholder="按品牌搜索" />
+          </div>
+          <div class="col-sm-6">
+            <input type="text" class="select2-ajax-tags-category col-md-12" placeholder="按品类搜索" />
+          </div>
+        </div>
+        <div class="space15"></div>
+        <div class="adv-table">
+          <table class="display table table-bordered table-striped dynamic-table">
+            <thead>
+              <tr>
+                <th class="col-sm-1">名称</th>
+                <th class="col-sm-1">经理</th>
+                <th class="col-sm-1">手机号</th>
+                <th class="col-sm-2">地址</th>
+                <th class="col-sm-3">品牌</th>
+                <th class="col-sm-3">品类</th>
+                <th class="col-sm-1">详细</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+  <!-- chained select -->
+  <script src="/static/chained.remote.min.js"></script>
+  <script type="text/javascript">
+    $("#city").remoteChained("#province", "/api/city");
+  </script>
+
+  <!--select2 -->
+  <script src="/static/select2/select2.js"></script>
+  <script src="/static/select2/init.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      Select2AjaxTags(".select2-ajax-tags-brand", "/api/brand", []);
+      Select2AjaxTags(".select2-ajax-tags-category", "/api/category", []);
+      Select2AjaxTags(".select2-ajax-tags-company", "{{ url_for("company.api") }}", []);
+      SelectingEve(".select2-ajax-tags-brand", "{{ url_for("company.search_brand") }}", ".dynamic-table");
+      SelectingEve(".select2-ajax-tags-category", "{{ url_for("company.search_category") }}", ".dynamic-table");
+      SelectingEve(".select2-ajax-tags-company", "{{ url_for("company.search_name") }}", ".dynamic-table");
+    });
+  </script>
+
+  <!--dynamic table-->
+  <script src="/static/datatable/jquery.dataTables.js"></script>
+  <script src="/static/datatable/DT_bootstrap.js"></script>
+  <script src="/static/datatable/dynamic_table_init.js"></script>
+
+  <script type="text/javascript">
+  $(document).ready(function(){ 
+    $("#city").change(function(){
+      $.ajax({
+        type: "GET",
+        url: "{{ url_for("company.search_city") }}"+"?q="+$(this).children("option:selected").val(),
+        dataType: "json",
+        success:function(data) {
+          for (var i=0; i<data.results.length; i++){
+            $(".dynamic-table").dataTable().fnAddData([
+              data.results[i].name,
+              data.results[i].manager,
+              data.results[i].phone,
+              data.results[i].location,
+              data.results[i].brand,
+              data.results[i].category,
+              "<a href=\"/company/preview/"+data.results[i].id+"\" target=\"_blank\">详情 <i class=\"fa fa-eye\"></i></a>"]);
+          }              
+        }
+      });    
+    });
+  });
+  </script>
+{% endblock %}

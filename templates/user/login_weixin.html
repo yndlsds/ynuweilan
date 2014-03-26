@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="shortcut icon" href="images/favicon.html">
+
+  <title>微信验证登陆</title>
+
+  <!--Core CSS -->
+  <link href="/static/bs3/bootstrap.min.css" rel="stylesheet"/>
+  <link href="/static/bs3/bootstrap-reset.css" rel="stylesheet"/>
+  <link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+
+  <!-- Custom styles for this template -->
+  <link href="/static/css/style.css" rel="stylesheet">
+  <link href="/static/css/style-responsive.css" rel="stylesheet"/>
+</head>
+<body class="login-body">
+  <div class="container">
+    {% include "flash.html" %}
+    <form class="form-signin">
+      <h2 class="form-signin-heading">微信验证登陆</h2>
+      <div class="login-wrap">
+        <div class="text-center">
+          <p><strong>向微信公众号回复下面的登陆随机码</strong></p>
+        </div>
+        <button class="btn btn-lg btn-login btn-block">#{{ random }}</button>
+        <div class="registration">
+          <a class="" href="{{ url_for("user.login_email") }}">邮箱登陆</a>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <!--Core js-->
+  <script src="/static/js/jquery.min.js"></script>
+  <script src="/static/bs3/bootstrap.min.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      function ajax_request(){ 
+        $.ajax({
+          type: "GET",
+          url: "{{ url_for("user.login_weixin_check", random=random) }}",
+          dataType: "json",
+          success:function(data){
+            if(data.success == true){
+              window.location.href="{{ url_for("user.home") }}"
+            }
+          }
+        });
+      };
+      setInterval(ajax_request, 5000);
+    });
+  </script>
+</body>
+</html>

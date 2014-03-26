@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}登记微信公众号{% endblock %}
+
+{% block css %}
+  <!-- select2 -->
+  <link href="/static/select2/select2.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <header class="panel-heading">
+          登记微信公众号
+          <span class="tools pull-right">
+            带 * 号项目为必填项目
+          </span>
+        </header>
+        <div class="panel-body">
+          <form class="form-horizontal bucket-form" method="POST" data-parsley-validate>
+          	{% from "render_field_error.html" import render_field_error %}
+            <div class="form-group">
+            	<label class="col-sm-3 control-label">微信号：<small>*</small></label>
+              <div class="col-sm-6 parsley-group">                
+                {{ form.name(class="form-control", autofocus=true,
+                **{"data-parsley-required":"true", "data-parsley-maxlength":"32"}) }}
+                {{ render_field_error(form.name) }}            
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">appid：</label>
+              <div class="col-sm-6 parsley-group">
+                {{ form.appid(class="form-control", **{"data-parsley-maxlength":"64"}) }}
+                {{ render_field_error(form.appid) }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-3 control-label">appsecret：</label>
+              <div class="col-sm-6 parsley-group">                
+                {{ form.appsecret(class="form-control", **{"data-parsley-maxlength":"64"}) }}
+                {{ render_field_error(form.appsecret) }}             
+              </div>
+            </div>
+            <button type="submit" class="btn btn-info col-sm-offset-3">提交</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <!-- select2 -->
+  <script src="/static/select2/select2.js"></script>
+  <script src="/static/select2/init.js"></script>
+
+  <!-- parsley -->
+  <script src="/static/parsley.min.js"></script>
+{% endblock %}

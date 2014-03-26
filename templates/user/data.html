@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block title %}用户账户{% endblock %}
+
+{% block css %}
+	<!--Morris Chart CSS -->
+  <link href="/static/morris/morris.css" rel="stylesheet"/>
+{% endblock %}
+
+{% block body %}
+  <div class="row">
+    <div class="col-sm-12">
+      <section class="panel">
+        <header class="panel-heading">
+          一周数据概览
+          <span class="tools pull-right">
+            <p>图例：<font color="#E67A77">用户数</font> <font color="#D9DD81">点击量</font> <font color="#79D1CF">消息数</font></p>
+          </span>
+        </header>
+        <div class="panel-body">
+          <div id="graph-area"></div>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+	<!--Morris Chart-->
+  <script src="/static/morris/morris.js"></script>
+  <script src="/static/morris/raphael-min.js"></script>
+  <script type="text/javascript">
+  Morris.Area({
+    element: 'graph-area',
+    behaveLikeLine: true,
+    gridEnabled: false,
+    gridLineColor: '#dddddd',
+    axes: true,
+    fillOpacity:.7,
+    data: [
+        {date: '2014-03-20', users: 10, click: 10, message: 10},
+        {date: '2014-03-21', users: 1778, click: 7294, message: 18441},
+        {date: '2014-03-22', users: 4912, click: 12969, message: 3501},
+        {date: '2014-03-23', users: 3767, click: 3597, message: 5689},
+        {date: '2014-03-24', users: 6810, click: 1914, message: 2293},
+        {date: '2014-03-25', users: 5670, click: 4293, message: 1881},
+        {date: '2014-03-26', users: 1000, click: 5713, message: 1791}
+    ],
+    lineColors:['#E67A77','#D9DD81','#79D1CF'],
+    xkey: 'date',
+    ykeys: ['users', 'click', 'message'],
+    labels: ['用户数', '点击量', '消息数'],
+    pointSize: 0,
+    lineWidth: 0,
+    hideHover: 'auto'
+  });
+  </script>
+{% endblock %}

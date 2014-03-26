@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>{{ company.name }}</title>
+
+	<!--Core CSS -->
+	<link href="/static/bs3/bootstrap.min.css" rel="stylesheet"/>
+	<link href="/static/bs3/bootstrap-reset.css" rel="stylesheet"/>
+	<link href="/static/font-awesome/css/font-awesome.css" rel="stylesheet"/>
+
+	<!-- Custom styles for this template -->
+	<link href="/static/css/style.css" rel="stylesheet">
+	<link href="/static/css/style-responsive.css" rel="stylesheet"/>
+</head>
+
+<body>
+	<div class="row">
+		<div class="col-md-12">
+			<section class="panel">
+				<div class="panel-body profile-information">
+					<div class="col-md-12">
+						<div class="profile-statistics">
+							<h3>{{ company.name }}</h3>					
+							<p>
+								{{ company.brief }}
+							</p><br>
+							<p><strong>主营品牌：</strong></p>
+							<p>{{ company.brands }}</p><br>
+							<p><strong>主营品类：</strong></p>
+							<p>{{ company.categorys }}</p><br>
+							<p><strong>联系人：</strong>{{ company.manager }}</p><br>
+							<p><strong>手机号：</strong>{{ company.phone }}</p><br>
+							<p><strong>电话：</strong>{{ company.telephone }}</p><br>
+							<p><strong>QQ QQ群：</strong>{{ company.qq }}</p><br>
+							<p><strong>邮箱：</strong>{{ company.email }}</p><br>
+							<p><strong>网站：</strong>{{ company.website }}</p><br>
+							<p><strong>地址：</strong>{{ company.province }}&nbsp{{ company.city }}&nbsp{{ company.address }}</p>
+							<ul>								
+								<li>
+									<a href="tel: +{{ company.phone }}"><i class="fa fa-phone"></i></a>
+								</li>
+								<li>
+									<a href="mailto:{{ company.email }}"><i class="fa fa-envelope-o"></i></a> 
+								</li>
+								<li>
+									<a href="{{ company.website }}"><i class="fa fa-external-link"></i></a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	</div>
+</body>
+</html>

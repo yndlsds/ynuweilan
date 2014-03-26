@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}公司管理{% endblock %}
+
+{% block css %}
+  <!--dynamic table-->
+  <link href="/static/datatable/demo_page.css" rel="stylesheet" />
+  <link href="/static/datatable/demo_table.css" rel="stylesheet" />
+  <link href="/static/datatable/DT_bootstrap.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <section class="panel">
+      <header class="panel-heading">
+        公司管理
+      </header>
+      <div class="panel-body">
+        <div class="clearfix">
+          <div class="btn-group pull-right">
+            {% from "render_pagination.html" import render_pagination %}
+            {{ render_pagination(companys, page) }}
+          </div>
+        </div>
+        <div class="space15"></div>
+        <div class="adv-table">
+          <table class="display table table-bordered table-striped dynamic-table">
+            <thead>
+              <tr>
+                <th class="col-sm-1">名称</th>
+                <th class="col-sm-1">经理</th>
+                <th class="col-sm-1">地址</th>
+                <th class="col-sm-1">手机 电话</th>
+                <th class="col-sm-1">邮箱 网站</th>
+                <th class="col-sm-1">QQ QQ群</th>
+                <th class="col-sm-5">简介</th>
+                <th class="col-sm-1">状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for company in companys.items %}
+                <tr>
+                  <td>{{ company.name }}</td>
+                  <td>{{ company.manager }}</td>
+                  <td>{{ company.address }}</td>
+                  <td>{{ company.phone }} {{ company.telephone }}</td>
+                  <td>{{ company.email }} {{ company.website }}</td>
+                  <td>{{ company.qq }}</td>
+                  <td>{{ company.brief }}</td>                  
+                  <td><a href="{{ url_for("company.state", companyId=company.id) }}">{% if company.state %}封禁{% else %}审核{% endif %}</a></td>                 
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+  <!--dynamic table-->
+  <script src="/static/datatable/jquery.dataTables.js"></script>
+  <script src="/static/datatable/DT_bootstrap.js"></script>
+  <script src="/static/datatable/dynamic_table_init.js"></script>
+{% endblock %}

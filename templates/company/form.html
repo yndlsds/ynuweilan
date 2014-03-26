@@ -1,0 +1,169 @@
+{% extends "base.html" %}
+
+{% block title %}公司信息维护{% endblock %}
+
+{% block css %}
+  <!-- select2 -->
+  <link href="/static/select2/select2.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+  <div class="row">
+    <div class="col-lg-12">
+      <section class="panel">
+        <header class="panel-heading">
+          带 * 号项目为必填项目
+        </header>
+        <div class="panel-body">
+          <form class="form-horizontal bucket-form" method="POST" data-parsley-validate>
+            {% from "render_field_error.html" import render_field_error %}
+            <div class="form-group">
+              <label class="col-sm-1 control-label">名称<small>*</small></label>
+              <div class="col-sm-2 parsley-group">                
+                {{ form.name(class="form-control", autofocus=true,
+                **{"data-parsley-required":"true", "data-parsley-maxlength":"32"}) }}
+                {{ render_field_error(form.name) }}            
+              </div>
+              <label class="col-sm-1 control-label">联系人<small>*</small></label>
+              <div class="col-sm-2 parsley-group">
+                {{ form.manager(class="form-control",
+                **{"data-parsley-required":"true", "data-parsley-maxlength":"8"}) }}
+                {{ render_field_error(form.manager) }}
+              </div>
+              <label class="col-sm-1 control-label">手机<small>*</small></label>
+              <div class="col-sm-2 parsley-group">                
+                {{ form.phone(class="form-control",
+                **{"data-parsley-required":"true", "data-parsley-type":"number", "data-parsley-maxlength":"11", "data-parsley-minlength":"11"}) }}
+                {{ render_field_error(form.phone) }}             
+              </div>
+              <label class="col-sm-1 control-label">电话</label>
+              <div class="col-sm-2 parsley-group">                
+                {{ form.telephone(class="form-control", placeholder="区号-分机号",
+                **{"data-parsley-maxlength":"16"}) }}
+                {{ render_field_error(form.telephone) }}             
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-1 control-label">地址<small>*</small></label>
+              <div class="col-sm-2">
+                <select class="form-control" name="provinceId" id="provinceId"
+                data-parsley-required="true">
+                  <option>省/直辖市</option>
+                  <option value="1">北京市</option>
+                  <option value="2">上海市</option>
+                  <option value="3">天津市</option>
+                  <option value="4">重庆市</option>
+                  <option value="5">黑龙江省</option>
+                  <option value="6">吉林省</option>
+                  <option value="7">辽宁省</option>
+                  <option value="8">山东省</option>
+                  <option value="9">山西省</option>
+                  <option value="10">陕西省</option>
+                  <option value="11">河北省</option>
+                  <option value="12">河南省</option>
+                  <option value="13">湖北省</option>
+                  <option value="14">湖南省</option>
+                  <option value="15">海南省</option>
+                  <option value="16">江苏省</option>
+                  <option value="17">江西省</option>
+                  <option value="18">广东省</option>
+                  <option value="19">广西省</option>
+                  <option value="20">云南省</option>
+                  <option value="21">贵州省</option>
+                  <option value="22">四川省</option>
+                  <option value="23">内蒙古</option>
+                  <option value="24">宁夏</option>
+                  <option value="25">甘肃省</option>
+                  <option value="26">青海省</option>
+                  <option value="27">西藏</option>
+                  <option value="28">新疆</option>
+                  <option value="29">安徽省</option>
+                  <option value="30">浙江省</option>
+                  <option value="31">福建省</option>
+                  <option value="32">港澳台</option>
+                </select>
+              </div>
+              <div class="col-sm-2">
+                <select class="form-control" name="cityId" id="cityId"
+                  data-parsley-required="true">              
+                  <option value="{{ company.cityId }}">{{ company.city }}</option>
+                </select>
+              </div>
+              <div class="col-sm-7 parsley-group {% if form.address.errors %}has-error{% endif %}">
+                {{ form.address(class="form-control", placeholder="详细地址，32字以内！",
+                **{"data-parsley-required":"true", "data-parsley-maxlength":"32"}) }}
+                {{ render_field_error(form.address) }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-1 control-label">邮箱</label>
+              <div class="col-sm-2 parsley-group">
+                {{ form.email(class="form-control",
+                **{ "data-parsley-type":"email", "data-parsley-maxlength":"32"}) }}
+                {{ render_field_error(form.email) }}
+              </div> 
+              <label class="col-sm-1 control-label">网站</label>
+              <div class="col-sm-2 parsley-group">
+                {{ form.website(class="form-control",
+                **{ "data-parsley-type":"url", "data-parsley-maxlength":"32"}) }}
+                {{ render_field_error(form.website) }}
+              </div>
+              <label class="col-sm-2 control-label">QQ QQ群</label>
+              <div class="col-sm-2 parsley-group">
+                {{ form.qq(class="form-control",
+                **{"data-parsley-maxlength":"16"}) }}
+                {{ render_field_error(form.qq) }}
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-1 control-label">品牌</label>
+              <div class="col-sm-11">
+                {{ form.brands(class="select2-ajax-tags-brand col-md-12",
+                **{"data-parsley-maxlength":"255"}) }}
+                {{ render_field_error(form.brands) }}                
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-sm-1 control-label">品类</label>
+              <div class="col-sm-11">
+                {{ form.categorys(class="select2-ajax-tags-category col-md-12",
+                **{"data-parsley-maxlength":"255"}) }}
+                {{ render_field_error(form.categorys) }}
+              </div>              
+            </div>
+            <div class="form-group">
+              <label class="col-sm-1 control-label">简介</label>
+              <div class="col-sm-11 parsley-group">
+                {{ form.brief(class="form-control",
+                **{ "data-parsley-maxlength":"140"}) }}
+                {{ render_field_error(form.brief) }}
+              </div>              
+            </div>
+            <button type="submit" class="btn btn-info col-sm-offset-3">提交</button>
+          </form>
+        </div>
+      </section>
+    </div>
+  </div>
+{% endblock %}
+
+{% block js %}
+  <!-- select2 -->
+  <script src="/static/select2/select2.js"></script>
+  <script src="/static/select2/init.js"></script>
+  <script type="text/javascript">
+    $(document).ready(function() {
+      Select2AjaxTags(".select2-ajax-tags-brand", "/api/brand");
+      Select2AjaxTags(".select2-ajax-tags-category", "/api/category");
+    });
+  </script>
+
+  <!-- parsley -->
+  <script src="/static/parsley.min.js"></script>
+
+  <!-- chained select -->
+  <script src="/static/chained.remote.min.js"></script>
+  <script type="text/javascript">
+    $("#cityId").remoteChained("#provinceId", "/api/city");
+  </script>
+{% endblock %}

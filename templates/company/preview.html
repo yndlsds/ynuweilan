@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="content-type" content="text/html;charset=iso-8859-1" />
+	<meta content="width=600px user-scalable=yes" name="viewport" />
+	<title>公司页面预览</title>
+	<link href="/static/preview.css" rel="stylesheet"/>	
+</head>
+<body>
+	<div id="phone">
+		<div class="phoneBg">
+			<div class="iframePane">
+				<iframe name="phone" src="{{ url_for("company.detail", companyId=company.id) }}" frameborder="0" width="320" height="532px"></iframe>
+			</div>
+		</div>
+	</div>
+	<div id="page">
+		<div>
+			<div>
+				<img src="/static/img/xianglianshuo.jpg" style="margin-bottom:70px;" />
+			</div>
+		</div>
+	</div>
+</body>
+</html>

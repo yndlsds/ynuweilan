@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block title %}用户列表{% endblock %}
+
+{% block css %}
+<!--dynamic table-->
+<link href="/static/datatable/demo_page.css" rel="stylesheet" />
+<link href="/static/datatable/demo_table.css" rel="stylesheet" />
+<link href="/static/datatable/DT_bootstrap.css" rel="stylesheet"/>
+{% endblock %}
+  
+{% block body %}
+<div class="row">
+  <div class="col-sm-12">
+    <section class="panel">
+      <header class="panel-heading">
+        用户列表
+      </header>
+      <div class="panel-body">
+        <div class="adv-table">
+          <table class="display table table-bordered table-striped" id="dynamic-table">
+            <thead>
+              <tr>
+                <th>公众号</th>
+                <th>微信昵称</th>
+                <th>登陆账号</th>
+                <th>权限</th>
+                <th>状态</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users %}
+                <tr>
+                  <td>{{ user.weixinhao if user.weixinhao else "未绑定"}}</td>
+                  <td>{{ user.nickname if user.weixinhao else "未绑定"}}</td>
+                  <td>{{ user.phone if user.phone else "未登记"}}</td>
+                  <td>
+                    {% if user.has_role("admin") %}系统级&nbsp{% endif %}
+                    {% if current_user.has_role("admin") %}
+	                    <a href="{{ url_for("user.manager", uid=user.id) }}">
+	                      {% if user.has_role("manager") %}管理员级 <i class="fa fa-ban"></i>{% else %}设管理员级权限{% endif %}
+	                    </a>&nbsp
+                    {% endif %}                    
+                  </td>
+                  <td>
+                    {% if user.state %}
+                      正常<a href="{{ url_for("user.state", uid=user.id) }}" title="锁定用户"> <i class="fa fa-lock"></i></a>
+                    {% else %}
+                      冻结<a href="{{ url_for("user.state", uid=user.id) }}" title="激活用户"> <i class="fa fa-unlock"></i></a>
+                    {% endif %}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+        </div>
+      </div>
+    </section>
+  </div>
+</div>
+{% endblock %}
+
+{% block js %}
+<!--dynamic table-->
+<script src="/static/datatable/jquery.dataTables.js"></script>
+<script src="/static/datatable/DT_bootstrap.js"></script>
+<script src="/static/datatable/dynamic_table_init.js"></script>
+{% endblock %}
